@@ -6,7 +6,7 @@ const meta: Meta<typeof Button> = {
   title: 'Components/Common/Button',
   tags: ['autodocs'],
   args: {
-    label: 'Hello World Button',
+    label: 'Button',
   },
   argTypes: {
     backgroundColor: { control: 'color' },
