@@ -3,6 +3,19 @@ import { within, userEvent, expect } from '@storybook/test';
 
 import { Page } from './Page';
 
+// 👇 Decorator to control styling
+// const withMaxWidth = (Story) => (
+//   <div style={{ maxWidth: 400, margin: 'auto' }}>
+//     <Story />
+//   </div>
+// );
+
+// const withGreenBackground = (Story) => (
+//   <div style={{ maxWidth: 400, backgroundColor: 'green', margin: 'auto' }}>
+//     <Story />
+//   </div>
+// );
+
 const meta = {
   title: 'Example/Page',
   component: Page,
@@ -10,6 +23,25 @@ const meta = {
     // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
     layout: 'fullscreen',
   },
+  // decorators: [withMaxWidth, withGreenBackground],
+
+  // 👇 Decorator to control theme
+  // decorators: [
+  //   (Story) => (
+  //     <ThemeProvider theme={theme}>
+  //       <Story />
+  //     </ThemeProvider>
+  //   ),
+  // ],
+  
+  // 👇 Decorator to control states
+  // decorators: [
+  //   (Story) => (
+  //     <StateProvider initialState={loggedIn}>
+  //       <Story />
+  //     </StateProvider>
+  //   ),
+  // ],
 } satisfies Meta<typeof Page>;
 
 export default meta;
@@ -27,6 +59,6 @@ export const LoggedIn: Story = {
     await expect(loginButton).not.toBeInTheDocument();
 
     const logoutButton = canvas.getByRole('button', { name: /Get out/i });
-    await expect(logoutButton).toBeInTheDocument();
+    await expect(logoutButton).not.toBeInTheDocument();
   },
 };
