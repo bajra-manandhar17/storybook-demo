@@ -1,0 +1,204 @@
+import { render, screen } from '@testing-library/react';
+import { Button } from './Button';
+import { vitest } from 'vitest';
+
+describe('Button', () => {
+  it('renders a button element', () => {
+    render(<Button />);
+    const buttonElement = screen.getByRole('button');
+    expect(buttonElement).toBeInTheDocument();
+  });
+
+  describe('when the button is clicked', () => {
+    it('calls the onClick function', () => {
+      const onClickMock = vitest.fn();
+      render(<Button onClick={onClickMock} />);
+      const buttonElement = screen.getByRole('button');
+      buttonElement.click();
+      expect(onClickMock).toHaveBeenCalled();
+    });
+  });
+
+  describe('When the isChild prop is passed', () => {
+    const asChildComponent = () => (
+      <Button asChild>
+        <a href="https://www.opencafe.io">Go to open cafe</a>
+      </Button>
+    );
+
+    it('renders a slot component', () => {
+      render(asChildComponent());
+      const slotElement = screen.getByRole('link');
+      expect(slotElement).toBeInTheDocument();
+    });
+  });
+});
+
+
+import type { StoryObj, Meta } from '@storybook/react';
+import { Button } from './Button';
+import { Loader2, Mail, ArrowRightCircle, BookOpen } from 'lucide-react';
+
+const meta: Meta<typeof Button> = {
+  component: Button,
+  title: 'Components/UI/Button',
+  tags: ['Button', 'UI', 'autodocs'],
+  parameters: {
+    controls: { expanded: true },
+    layout: 'centered',
+    docs: {
+      description: {
+        component: 'Different types of buttons',
+      },
+    },
+  },
+};
+
+export default meta;
+
+type Story = StoryObj<typeof Button>;
+
+export const Default: Story = {
+  args: {
+    children: 'A boring default button',
+    onClick: () => alert('Clicked!'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A default button component',
+      },
+    },
+  },
+};
+
+export const Secondary: Story = {
+  args: {
+    children: 'A secondary button',
+    onClick: () => alert('Clicked!'),
+    variant: 'secondary',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with a secondary variant',
+      },
+    },
+  },
+};
+
+export const Outline: Story = {
+  args: {
+    children: (
+      <div className="flex items-center">
+        <Mail className="mr-2 w-4 h-4" />
+        <span>Login with Email</span>
+      </div>
+    ),
+    onClick: () => alert('Clicked!'),
+    variant: 'outline',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with an outline variant',
+      },
+    },
+  },
+};
+
+export const Ghost: Story = {
+  args: {
+    children: (
+      <div className="flex items-center">
+        <span className="animate-bounce">🦋</span>
+        <span>🤔</span>
+        <BookOpen className="mx-2 w-4 h-4" />
+        <span className="ml-2">is this a button?</span>
+      </div>
+    ),
+    onClick: () => alert('This is indeed a button!'),
+    variant: 'ghost',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with a ghost variant',
+      },
+    },
+  },
+};
+
+export const Link: Story = {
+  args: {
+    children: 'A totally legit link you should click',
+    onClick: () => alert('Clicked!'),
+    variant: 'link',
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with a link variant',
+      },
+    },
+  },
+};
+
+export const Disabled: Story = {
+  args: {
+    children: (
+      <>
+        <Loader2 className="mr-2 w-4 h-4 animate-spin" />
+        <span>Loading</span>
+      </>
+    ),
+    disabled: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with a disabled state with custom content',
+      },
+    },
+  },
+};
+
+export const LargeDestructive: Story = {
+  args: {
+    children: (
+      <>
+        <span>Continue anyway</span>
+        <ArrowRightCircle className="ml-2 w-8 h-8" />
+      </>
+    ),
+    size: 'lg',
+    variant: 'destructive',
+    onClick: () => alert('Clicked!'),
+  },
+  parameters: {
+    docs: {
+      description: {
+        story: 'A button component with a large size and destructive variant',
+      },
+    },
+  },
+};
+
+export const AsChildProp: Story = {
+  args: {
+    children: (
+      <div>
+        <a href="https://www.opencafe.io">Go to open cafe</a>
+      </div>
+    ),
+    asChild: true,
+  },
+  parameters: {
+    docs: {
+      description: {
+        story:
+          'When using the asChild prop, the library ensures that the custom child element receives all the required props from the parent component and combines them with the child’s existing props. In addition, if a ref is provided, it will be composed with the child’s ref and passed down correctly.',
+      },
+    },
+  },
+};
